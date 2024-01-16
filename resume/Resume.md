@@ -2,7 +2,7 @@
 ### SOFTWARE ENGINEER QUALIFICATIONS
 * Experience with object oriented development in Swift, Java, Objective-C, and C++
 * Experience building and maintaining mobile applications for iOS and Android 
-* Experience developing, testing and maintaining web apps and services powerd by AWS (Lambda, Fargate, DynamoDB, etc.)
+* Experience developing, testing and maintaining web apps and services powered by AWS (Lambda, Fargate, DynamoDB, etc.)
 * Experience working on a team practicing agile methodologies and Scrum
 * Experience with UML, design patterns, and TDD
 * Familiar with C++, Ruby, PHP, MySQL, JavaScript, CSS, and HTML
@@ -10,7 +10,7 @@
 
 ### WORK EXPERIENCE
 #### AMAZON.COM, Seattle, WA
-##### SDE II, 2015-2019
+##### SDE II, 2015-2021
 * Developed web services and other tools for Amazon's internal HR org to facilitate processing of large-scale employee data.
   * Leveraged AWS serverless technologies for an entirely serverless ecosystem, using technologes such as API Gateway, Lambda, Fargate, DynamoDB, and Batch.
 * Performed as tech lead on the Alexa Auto iOS team.
