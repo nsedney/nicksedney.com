@@ -1,16 +1,25 @@
 import * as cdk from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class NicksedneyComStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+    super(scope, id, { ...props, analyticsReporting: false });
 
-    // The code that defines your stack goes here
+    const nicksedneyBucket = new s3.Bucket(this, "nicksedneybucket", {
+      bucketName: "nicksedney.com",
+      websiteIndexDocument: "index.html",
+      websiteErrorDocument: "error.html",
+      blockPublicAccess: {
+        blockPublicAcls: true,
+        blockPublicPolicy: false,
+        ignorePublicAcls: true,
+        restrictPublicBuckets: false
+      },
+      publicReadAccess: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'NicksedneyComQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
   }
 }
