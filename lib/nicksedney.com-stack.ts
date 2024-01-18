@@ -1,5 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
+import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as s3deployment from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 
@@ -32,6 +34,20 @@ export class NicksedneyComStack extends cdk.Stack {
     const deployment = new s3deployment.BucketDeployment(this, "nicksedneyDeployWebsite", {
       sources: [s3deployment.Source.asset("website")],
       destinationBucket: nicksedneyBucket
+    });
+
+    // The HostedZone itself must be created by hand - if we try to create in CDK we'll get random name servers that
+    // don't match registered domain.  But we can manage the record route traffic to our s3 bucket.
+    const nicksedneyHostedZone = route53.HostedZone.fromLookup(this, "nicksedneyzone", {
+      domainName: "nicksedney.com"
+    });
+    new route53.ARecord(this, "nickssedneyalias", {
+      recordName: "nicksedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.BucketWebsiteTarget(nicksedneyBucket)
+      ),
+      zone: nicksedneyHostedZone,
+      comment: "CDK managed"
     });
   }
 }
