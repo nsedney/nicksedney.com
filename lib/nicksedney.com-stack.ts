@@ -46,8 +46,29 @@ export class NicksedneyComStack extends cdk.Stack {
       target: route53.RecordTarget.fromAlias(
         new targets.BucketWebsiteTarget(nicksedneyBucket)
       ),
-      zone: nicksedneyHostedZone,
-      comment: "CDK managed"
+      zone: nicksedneyHostedZone
+    });
+
+
+    // Configure other domains to redirect to nicksedney.com
+
+    const wwwnicksedneyBucket = new s3.Bucket(this, "wwwnicksedneybucket", {
+      bucketName: "www.nicksedney.com",
+      websiteRedirect: {
+        hostName: "nicksedney.com"
+      },
+      serverAccessLogsBucket: accessLogsBucket,
+      serverAccessLogsPrefix: 'www.nicksedney.com/',
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    });
+    new route53.ARecord(this, "wwwnickssedneyalias", {
+      recordName: "www.nicksedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.BucketWebsiteTarget(wwwnicksedneyBucket)
+      ),
+      zone: nicksedneyHostedZone
     });
   }
 }
