@@ -52,6 +52,7 @@ export class NicksedneyComStack extends cdk.Stack {
 
     // Configure other domains to redirect to nicksedney.com
 
+    // www.nicksedney.com
     const wwwnicksedneyBucket = new s3.Bucket(this, "wwwnicksedneybucket", {
       bucketName: "www.nicksedney.com",
       websiteRedirect: {
@@ -69,6 +70,29 @@ export class NicksedneyComStack extends cdk.Stack {
         new targets.BucketWebsiteTarget(wwwnicksedneyBucket)
       ),
       zone: nicksedneyHostedZone
+    });
+
+    // nicholassedney.com
+    const nicholassedneyHostedZone = route53.HostedZone.fromLookup(this, "nicholassedneyzone", {
+      domainName: "nicholassedney.com"
+    });
+    const nicholassedneyBucket = new s3.Bucket(this, "nicholassedneybucket", {
+      bucketName: "nicholassedney.com",
+      websiteRedirect: {
+        hostName: "nicksedney.com"
+      },
+      serverAccessLogsBucket: accessLogsBucket,
+      serverAccessLogsPrefix: 'nicholassedney.com/',
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    });
+    new route53.ARecord(this, "nicholassedneyalias", {
+      recordName: "nicholassedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.BucketWebsiteTarget(nicholassedneyBucket)
+      ),
+      zone: nicholassedneyHostedZone
     });
   }
 }
