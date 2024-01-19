@@ -40,11 +40,6 @@ export class NicksedneyComStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     });
-    // Create S3 deployment to populate the bucket with website's content
-    const deployment = new s3deployment.BucketDeployment(this, "nicksedneyDeployWebsite", {
-      sources: [s3deployment.Source.asset("website")],
-      destinationBucket: nicksedneyBucket
-    });
     // Retrieve HostedZone where we configure DNS routing.  NOTE:
     //  The HostedZone itself must be created by hand - if we try to create in CDK we'll get random name servers that
     //  don't match registered domain: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-replace-hosted-zone.html
@@ -69,6 +64,12 @@ export class NicksedneyComStack extends cdk.Stack {
         new targets.CloudFrontTarget(nicksedneyCloudfront)
       ),
       zone: nicksedneyHostedZone
+    });
+    // Create S3 deployment to populate the bucket with website's content
+    const deployment = new s3deployment.BucketDeployment(this, "nicksedneyDeployWebsite", {
+      sources: [s3deployment.Source.asset("website")],
+      destinationBucket: nicksedneyBucket,
+      distribution: nicksedneyCloudfront // Invalidate CloudFront cache on deploy
     });
 
 

@@ -4,42 +4,58 @@
     <title>Nick Sedney's Home Page</title>
 
     <style>
-
         body {
-            background-image: url("mountains.jpg");
-            background-repeat: repeat-y;
-            background-attachment: fixed;
-            background-position: center top;
-            background-size: 800px;
+            margin: 10px 0px;
             background-color: #dee8eb;
-            font-family: Helvetica, Arial;
-            width: 800px;
-            margin: 10px 0px 10px 0px;
         }
 
-        .textblock {
+        .section {
             background: lightgrey;
             padding: 10px;
             opacity: 0.7;
+        }
+
+        h1, h2 {
+            margin: 0px 0px;
             font-weight: bold;
         }
 
-        h1,h2 {
-            margin: 0px 0px;
+
+
+        #container {
+            background-image: url("mountains.jpg");
+            background-repeat: repeat-y;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            font-family: Helvetica, Arial;
+            width: 80%;
+            max-width: 900px;
         }
 
+        #page  {
+            padding: 15px ;
+            height: 90%;
+            min-height: 500px;
+            display: flex;
+            flex-flow: column;
+        }
+        
         #header {
             text-align: right;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            flex: 0 1 auto;
+        }
+
+        #content {
+            flex: 1 1 auto;
+            display: flex;
+            flex-flow: column;
         }
 
         #resume {
             width: 100%;
-            height: 100%;
-        }
-
-        #content {
-            width: 95%;
+            flex: 1 1 auto;
         }
 
         .center {
@@ -51,17 +67,24 @@
 </head>
 
 <body class="center" style="">
-    <div id="content" class="center">
-        <div class="textblock" id="header">
-            <h1>NICK SEDNEY</h1>
-            The Hompage
-        </div>
-        <div class="textblock">
-            <h2>RESUME</h2>
-        <iframe id="resume"
-            src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
+    <div id="container" class="center">
+        <div id="page">
+            <div id="header" class="section">
+                <h1>NICK SEDNEY</h1>
+                The Hompage
+            </div>
+            <div id="content" class="section">
+                <h2>
+                    RESUME
+                    <a href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
+                        <img src="download-icon.svg" height="15px" style="float: right;"/>
+                    </a>
+                </h2>
+                
+                <iframe id="resume"
+                    src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
+            </div>
         </div>
     </div>
 </body>
-
 </html>
