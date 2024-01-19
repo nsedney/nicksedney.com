@@ -10,7 +10,7 @@ const app = new cdk.App();
 // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_certificatemanager-readme.html#cross-region-certificates 
 const certStack = new NicksedneyCertStack(app, 'NicksedneyCertStack', {
   env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT, // We appear to need to explicitly provide account for multi-stack deployment
+    account: process.env.CDK_DEFAULT_ACCOUNT, // We appear to need to explicitly provide `account` for multi-stack deployment
     region: "us-east-1", // TODO: Are there defined types we could/should use?  What's ts convention for constants?
   },
   crossRegionReferences: true,
@@ -22,4 +22,4 @@ new NicksedneyComStack(app, 'NicksedneyComStack', {
     region: process.env.CDK_DEFAULT_REGION },
   nicksedneyCert: certStack.nickSedneyCert,
   crossRegionReferences: true,
-});
+}).addDependency(certStack);
