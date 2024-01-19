@@ -8,7 +8,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "deploySite": "cdk deploy NicksedneyComStack",
+    "deployAll": "cdk deploy --all"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
