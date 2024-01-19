@@ -13,7 +13,7 @@ export class NicksedneyCertStack extends cdk.Stack {
     public readonly nickSedneyCert: acm.Certificate;
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-        super(scope, id, { ...props, analyticsReporting: false });
+        super(scope, id, { ...props });
 
         this.nickSedneyCert = new acm.Certificate(this, 'nicksedneyCertificate', {
             domainName: 'nicksedney.com',
