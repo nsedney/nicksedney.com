@@ -6,5 +6,21 @@
   "hosted-zone:account=491781553203:domainName=nicholassedney.com:region=us-west-2": {
     "Id": "/hostedzone/Z0906986U6CH51SDADLM",
     "Name": "nicholassedney.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nicksedney.com:region=us-east-1": {
+    "Id": "/hostedzone/ZLAWGPTYMGH3",
+    "Name": "nicksedney.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nsedney.com:region=us-east-1": {
+    "Id": "/hostedzone/Z03733891YC5WOEZFLJY0",
+    "Name": "nsedney.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nicholassedney.com:region=us-east-1": {
+    "Id": "/hostedzone/Z0906986U6CH51SDADLM",
+    "Name": "nicholassedney.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nsedney.com:region=us-west-2": {
+    "Id": "/hostedzone/Z03733891YC5WOEZFLJY0",
+    "Name": "nsedney.com."
   }
 }

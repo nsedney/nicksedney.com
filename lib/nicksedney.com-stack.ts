@@ -58,7 +58,7 @@ export class NicksedneyComStack extends cdk.Stack {
       certificate: nickSedneyCert
     });
     // Route DNS traffic to CloudFront Distribution
-    new route53.ARecord(this, "nickssedneyalias", {
+    new route53.ARecord(this, "nickssedneyDNSRecord", {
       recordName: "nicksedney.com",
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(nicksedneyCloudfront)
@@ -71,67 +71,73 @@ export class NicksedneyComStack extends cdk.Stack {
       destinationBucket: nicksedneyBucket,
       distribution: nicksedneyCloudfront // Invalidate CloudFront cache on deploy
     });
-
-
-    /// Configure other (sub)domains to redirect to nicksedney.com
-    // TODO: Can we somehow do this w/out buckets now that cloudfront is involved?
-
-    /// www.nicksedney.com
-    // Empty bucket used purely to redirect traffic hitting `www` subdomain
-    const wwwnicksedneyBucket = new s3.Bucket(this, "wwwnicksedneybucket", {
-      bucketName: "www.nicksedney.com",
-      websiteRedirect: {
-        hostName: "nicksedney.com"
-      },
-      serverAccessLogsBucket: accessLogsBucket,
-      serverAccessLogsPrefix: 'www.nicksedney.com/',
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+    // Create CloudFront function that redirects traffic to `nicksedney.com`
+    const func = new cloundfront.Function(this, "nickSedneyRedirectFunc", {
+      functionName: "nicksedneyRedirect",
+      code: cloundfront.FunctionCode.fromInline(`
+        function handler(event) {
+          return {
+            statusCode: 302,
+            headers: {
+               "location": { "value": "https://nicksedney.com" }
+            }
+          }
+        }   
+      `),
+      runtime: cloundfront.FunctionRuntime.JS_2_0
     });
-    // Create a new distribution so we can disable cacheing for 'redirect' endpoint. It's not clear
-    // to me if previous distribution could be used for both.
-    const wwwnicksedneyCloudFront = new cloundfront.Distribution(this, 'wwwnicksedneyCfDistribution', {
+    // Create CloudFront distribution for endpoints that will redirect to nicksedney.com
+    const redirectDistribution = new cloundfront.Distribution(this, 'nicksedneyRedirectDistribution', {
       defaultBehavior: {
-        origin: new cforigins.S3Origin(wwwnicksedneyBucket),
-        viewerProtocolPolicy: cloundfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloundfront.CachePolicy.CACHING_DISABLED
+        origin: new cforigins.HttpOrigin("site.invalid", {}),
+        functionAssociations: [{
+          function: func,
+          eventType: cloundfront.FunctionEventType.VIEWER_REQUEST,
+        }],
       },
-      domainNames: ["www.nicksedney.com"],
+      domainNames: ["*.nicksedney.com",  "nsedney.com", "*.nsedney.com", "nicholassedney.com", "*.nicholassedney.com"],
       certificate: nickSedneyCert
     });
-    new route53.ARecord(this, "wwwnickssedneyalias", {
-      recordName: "www.nicksedney.com",
+    // TODO: Tons of repeitition in here - time to learn to write some Constructs, or at least some helper functions ...
+    // Redirects for nicksedney.com subdomains
+    new route53.ARecord(this, "*.nickssedneyalias", {
+      recordName: "*.nicksedney.com",
       target: route53.RecordTarget.fromAlias(
-        new targets.CloudFrontTarget(wwwnicksedneyCloudFront)
+        new targets.CloudFrontTarget(redirectDistribution)
       ),
       zone: nicksedneyHostedZone
     });
-
-    /// nicholassedney.com
-    // New domain means a new hosted zone
-    const nicholassedneyHostedZone = route53.HostedZone.fromLookup(this, "nicholassedneyzone", {
-      domainName: "nicholassedney.com"
+    // Redirects for nsedney.com
+    const nsedneyzone = route53.HostedZone.fromLookup(this, "nsedneyzone", { domainName: "nsedney.com" });
+    new route53.ARecord(this, "nsedneyalias", {
+      recordName: "nsedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.CloudFrontTarget(redirectDistribution)
+      ),
+      zone: nsedneyzone
     });
-    // We can still use an empty redirect bucket
-    const nicholassedneyBucket = new s3.Bucket(this, "nicholassedneybucket", {
-      bucketName: "nicholassedney.com",
-      websiteRedirect: {
-        hostName: "nicksedney.com"
-      },
-      serverAccessLogsBucket: accessLogsBucket,
-      serverAccessLogsPrefix: 'nicholassedney.com/',
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+    new route53.ARecord(this, "*.nsedneyalias", {
+      recordName: "*.nsedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.CloudFrontTarget(redirectDistribution)
+      ),
+      zone: nsedneyzone
     });
-    // Route DNS traffic to s3 bucket
+    // Redirects for nicholassedney.com
+    const nicholassedneyzone = route53.HostedZone.fromLookup(this, "nicholassedneyzone", { domainName: "nicholassedney.com" });
     new route53.ARecord(this, "nicholassedneyalias", {
       recordName: "nicholassedney.com",
       target: route53.RecordTarget.fromAlias(
-        new targets.BucketWebsiteTarget(nicholassedneyBucket)
+        new targets.CloudFrontTarget(redirectDistribution)
       ),
-      zone: nicholassedneyHostedZone
+      zone: nicholassedneyzone
+    });
+    new route53.ARecord(this, "*.nicholassedneyalias", {
+      recordName: "*.nicholassedney.com",
+      target: route53.RecordTarget.fromAlias(
+        new targets.CloudFrontTarget(redirectDistribution)
+      ),
+      zone: nicholassedneyzone
     });
   }
 }
