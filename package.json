@@ -9,8 +9,9 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploySite": "cdk deploy NicksedneyComStack",
-    "deployAll": "cdk deploy --all"
+    "aws-auth-details": "aws sts get-caller-identity --no-cli-pager # Query identity; returns non-0 status if not authenticated.",
+    "predeploy": "if ! npm run aws-auth-details; then aws sso login; fi # Login via aws sso if needed",
+    "deploy": "cdk deploy NicksedneyComStack"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
