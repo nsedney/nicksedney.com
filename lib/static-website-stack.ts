@@ -14,9 +14,9 @@ import { DomainName } from 'aws-cdk-lib/aws-apigateway';
  * Required args for a StaticWebsiteStack
  */
 export interface StaticWebsiteStackProps extends cdk.StackProps {
-  /** Domain under which website will display */
+  /** Domain under which website will display.  Any subdomains provided will redirect to the registered domain. */
   primaryDomain: DomainConfig,
-  /** Other domains that should redirect to primary domain */
+  /** Any other supplied domains will redirect to the primary domain */
   redirectDomains?: DomainConfig[],
   /** Certificate must be created in `us-east-1`, and associated with all provided domains */
   websiteCert: acm.Certificate;
@@ -64,8 +64,10 @@ export class StaticWebsiteStack extends cdk.Stack {
     })
 
     // Retrieve HostedZone where we configure DNS routing.  NOTE:
-    //  The HostedZone itself must be created by hand - if we try to create in CDK we'll get random name servers that
-    //  don't match registered domain: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-replace-hosted-zone.html
+    //  The HostedZone should have been created when registering the domain - if we try to create in CDK
+    //  we'll get random name servers that don't match registered domain!
+    //  If for some reason we need to recreate the zone, we can do so:
+    //  https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-replace-hosted-zone.html
     const websiteHostedZone = route53.HostedZone.fromLookup(this, `${primaryDomainName}_hostedZone`, {
       domainName: primaryDomainName
     })
@@ -165,15 +167,15 @@ export class StaticWebsiteStack extends cdk.Stack {
 
     // Redirect all other domains
     redirectDomains.forEach((domain) => {
-      // Each DomainConfig 
-      const zone = route53.HostedZone.fromLookup(this, `${domain.registeredDomain}_hostedZone`, {
+      // Each DomainConfig should represent a single registered domain, with a single hosted zone.
+      const hostedZone = route53.HostedZone.fromLookup(this, `${domain.registeredDomain}_hostedZone`, {
         domainName: domain.registeredDomain
       })
 
       // Create record of the SLD domain and all provided subdomains
-      ;[domain.registeredDomain, ...(domain.supportedSubdomains ?? [])].forEach(subdomain => {
-        createRedirectRecord(subdomain, zone)
-      });
+      ;[domain.registeredDomain, ...(domain.supportedSubdomains ?? [])].forEach(domainName => {
+        createRedirectRecord(domainName, hostedZone)
+      })
     })
   }
 }

@@ -5,6 +5,10 @@ import { StaticWebsiteStack } from '../lib/static-website-stack';
 import { PublicCertificateStack } from '../lib/public-certificate-stack';
 import { DomainConfig } from '../lib/types';
 
+/** 
+ * Defina all domains we'd like to use for our site.  Note each `registeredDomain` must be registered in Route53,
+ * along with a corresponding `HostedZone` that should have been created on registration.
+ */
 const stackConfig = {
   domain: { registeredDomain: "nicksedney.com", supportedSubdomains: ["*.nicksedney.com"] } as DomainConfig,
   redirectDomains: [
