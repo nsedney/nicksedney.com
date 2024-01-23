@@ -90,7 +90,6 @@ export class StaticWebsiteStack extends cdk.Stack {
         new targets.CloudFrontTarget(websiteCloudfront)
       ),
       zone: websiteHostedZone,
-
     })
 
     // Create S3 deployment to populate the websiteBucket with website's content
@@ -172,22 +171,22 @@ export class StaticWebsiteStack extends cdk.Stack {
         domainName: domain.registeredDomain
       })
 
-      // Create record of the SLD domain and all provided subdomains
-      ;[domain.registeredDomain, ...(domain.supportedSubdomains ?? [])].forEach(domainName => {
-        createRedirectRecord(domainName, hostedZone)
-      })
+        // Create record of the SLD domain and all provided subdomains
+        ;[domain.registeredDomain, ...(domain.supportedSubdomains ?? [])].forEach(domainName => {
+          createRedirectRecord(domainName, hostedZone)
+        })
     })
 
     /** Outputs */
 
     new cdk.CfnOutput(this, `${primaryDomainName}_urlOutput`, {
-      value: `https://${ primaryDomainName} `,
+      value: `https://${primaryDomainName} `,
       description: 'Primary URL for site navigation.',
       exportName: 'websiteUrl',
     });
 
     new cdk.CfnOutput(this, `${primaryDomainName}_redirectUrlsOutput`, {
-      value: alternateDomainNames.map((domainName) => `https://${ domainName} `).join(",") ,
+      value: alternateDomainNames.map((domainName) => `https://${domainName} `).join(","),
       description: 'Other URLs that should redirect to primary URL',
       exportName: 'websiteRedirectUrls',
     });

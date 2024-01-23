@@ -46,12 +46,13 @@ export class PublicCertificateStack extends cdk.Stack {
                 [] as string[]
             )
         ]
+
         // Look up HostedZone for each registered domain, and put into the object format expected by Certificate resource:
         const hostedZones = registeredDomains.reduce(
             (zones, domainName) => {
-                const zone = route53.HostedZone.fromLookup(this, domainName, { domainName: domainName })
-                return { ...zones, [domainName]: zone }
-            }, {}
+                zones[domainName] = route53.HostedZone.fromLookup(this, domainName, { domainName: domainName })
+                return zones
+            }, <{ [domainName: string]: cdk.aws_route53.IHostedZone; }>{}
         )
 
         this.nickSedneyCert = new acm.Certificate(this,
@@ -63,3 +64,4 @@ export class PublicCertificateStack extends cdk.Stack {
         })
     }
 }
+
