@@ -146,7 +146,7 @@ export class StaticWebsiteStack extends cdk.Stack {
     })
 
     /**
-     *  Create a DNS A record redirecting a domain to our cloudfront `redirect` function 
+     * Create a DNS A record pointing provide domain to our cloudfront `redirect` function 
      * @param domainName - domain name to redirect
      * @param hostedZone - HostedZone configured for the provided domain
      * */
@@ -177,5 +177,19 @@ export class StaticWebsiteStack extends cdk.Stack {
         createRedirectRecord(domainName, hostedZone)
       })
     })
+
+    /** Outputs */
+
+    new cdk.CfnOutput(this, `${primaryDomainName}_urlOutput`, {
+      value: `https://${ primaryDomainName} `,
+      description: 'Primary URL for site navigation.',
+      exportName: 'websiteUrl',
+    });
+
+    new cdk.CfnOutput(this, `${primaryDomainName}_redirectUrlsOutput`, {
+      value: alternateDomainNames.map((domainName) => `https://${ domainName} `).join(",") ,
+      description: 'Other URLs that should redirect to primary URL',
+      exportName: 'websiteRedirectUrls',
+    });
   }
 }
