@@ -7,8 +7,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as s3deployment from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
-import { DomainConfig } from './types';
-import { DomainName } from 'aws-cdk-lib/aws-apigateway';
+import type { DomainConfig } from './types';
 
 /**
  * Required args for a StaticWebsiteStack

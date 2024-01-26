@@ -3,7 +3,7 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { StaticWebsiteStack } from '../lib/static-website-stack';
 import { PublicCertificateStack } from '../lib/public-certificate-stack';
-import { DomainConfig } from '../lib/types';
+import type { DomainConfig } from '../lib/types';
 
 /** 
  * Defina all domains we'd like to use for our site.  Note each `registeredDomain` must be registered in Route53,

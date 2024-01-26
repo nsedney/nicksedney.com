@@ -41,18 +41,18 @@ export class PublicCertificateStack extends cdk.Stack {
         // All additional domain names that we want to include with certificate.
         const alternateDomainsNames = [
             ...(props.certificateDomain.supportedSubdomains ?? []),
-            ...redirectDomains.reduce(
+            ...redirectDomains.reduce<string[]>(
                 (accumulator, domain) => accumulator.concat([domain.registeredDomain, ...(domain.supportedSubdomains ?? [])]),
-                [] as string[]
+                []
             )
         ]
 
         // Look up HostedZone for each registered domain, and put into the object format expected by Certificate resource:
-        const hostedZones = registeredDomains.reduce(
+        const hostedZones = registeredDomains.reduce<{ [domainName: string]: cdk.aws_route53.IHostedZone; }>(
             (zones, domainName) => {
                 zones[domainName] = route53.HostedZone.fromLookup(this, domainName, { domainName: domainName })
                 return zones
-            }, <{ [domainName: string]: cdk.aws_route53.IHostedZone; }>{}
+            }, {}
         )
 
         this.nickSedneyCert = new acm.Certificate(this,

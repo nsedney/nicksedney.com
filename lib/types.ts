@@ -1,7 +1,7 @@
 /**
  * Describes a domain name, and all subdomains that should redirect to the parent
  */
-export interface DomainConfig {
+export type DomainConfig = {
     /** Domain name registered with Route53  */
     registeredDomain: string,
 

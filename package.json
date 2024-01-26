@@ -8,9 +8,11 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk",
     "aws-auth-details": "aws sts get-caller-identity --no-cli-pager # Query identity; returns non-0 status if not authenticated.",
-    "predeploy": "if ! npm run aws-auth-details; then aws sso login; fi # Login via aws sso if needed",
+    "aws-sso-login": "if ! npm run aws-auth-details; then aws sso login; fi # Login via aws sso if needed",
+    "precdk": "npm run aws-sso-login",
+    "cdk": "cdk",
+    "predeploy": "npm run aws-sso-login",
     "deploy": "cdk deploy NicksedneyComStack"
   },
   "devDependencies": {

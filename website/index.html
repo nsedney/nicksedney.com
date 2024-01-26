@@ -5,52 +5,54 @@
 
     <style>
         body {
-            margin: 10px 0px;
-            background-color: #dee8eb;
+            background-color: #18191e;
         }
 
         .section {
             background: lightgrey;
-            padding: 10px;
+            padding: 15px;
             opacity: 0.7;
         }
 
-        h1, h2 {
-            margin: 0px 0px;
+        h1,
+        h2 {
+            margin: 0px;
             font-weight: bold;
         }
 
-
-
         #container {
             background-image: url("mountains.jpg");
-            background-repeat: repeat-y;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
             background-size: cover;
             font-family: Helvetica, Arial;
+            border-radius: 10px;
             width: 80%;
             max-width: 900px;
         }
 
-        #page  {
-            padding: 15px ;
-            height: 90%;
+        #page {
+            padding: 15px;
+            height: 100%;
+            bottom: 20;
             min-height: 500px;
             display: flex;
             flex-flow: column;
+            box-sizing: border-box;
         }
-        
+
         #header {
             text-align: right;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             flex: 0 1 auto;
+            border-radius: 10px 10px 0px 0px;
         }
 
         #content {
             flex: 1 1 auto;
             display: flex;
             flex-flow: column;
+            border-radius: 0px 0px 10px 10px;
         }
 
         #resume {
@@ -76,15 +78,17 @@
             <div id="content" class="section">
                 <h2>
                     RESUME
-                    <a href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
-                        <img src="download-icon.svg" height="15px" style="float: right;"/>
+                    <a
+                        href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
+                        <img src="download-icon.svg" height="15px" style="float: right;" />
                     </a>
                 </h2>
-                
+
                 <iframe id="resume"
                     src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
             </div>
         </div>
     </div>
 </body>
+
 </html>
