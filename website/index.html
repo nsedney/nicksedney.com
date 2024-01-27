@@ -1,23 +1,20 @@
-<html>
+<!DOCTYPE html>
+
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Nick Sedney's homepage">
+
     <title>Nick Sedney's Home Page</title>
 
     <style>
         body {
             background-color: #18191e;
-        }
-
-        .section {
-            background: lightgrey;
-            padding: 15px;
-            opacity: 0.7;
-        }
-
-        h1,
-        h2 {
             margin: 0px;
-            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
         }
 
         #container {
@@ -26,67 +23,87 @@
             background-position: center;
             background-size: cover;
             font-family: Helvetica, Arial;
+            margin: 10px;
             border-radius: 10px;
-            width: 80%;
             max-width: 900px;
+            min-height: 500px !important;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         #page {
-            padding: 15px;
-            height: 100%;
-            bottom: 20;
-            min-height: 500px;
+            padding: 10px;
+            flex: 1;
             display: flex;
-            flex-flow: column;
-            box-sizing: border-box;
+            flex-direction: column;
         }
 
-        #header {
+        header#title {
             text-align: right;
-            margin-bottom: 5px;
-            flex: 0 1 auto;
             border-radius: 10px 10px 0px 0px;
         }
 
-        #content {
-            flex: 1 1 auto;
+        main {
+            flex: 1;
             display: flex;
-            flex-flow: column;
+            flex-direction: column;
             border-radius: 0px 0px 10px 10px;
         }
 
-        #resume {
-            width: 100%;
-            flex: 1 1 auto;
+        article {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+        .section {
+            background: lightgrey;
+            padding: 15px;
+            margin: 4px;
+            opacity: 0.7;
+        }
+
+        header .icon {
+            float: right;
+            height: 15px;
+        }
+
+        h1,
+        h2 {
+            margin: 0px;
+            font-weight: bold;
+        }
+
+        #resume {
+            flex: 1;
+            box-sizing: content-box;
         }
     </style>
 </head>
 
-<body class="center" style="">
+<body class="center">
     <div id="container" class="center">
         <div id="page">
-            <div id="header" class="section">
+            <header id="title" class="section">
                 <h1>NICK SEDNEY</h1>
                 The Hompage
-            </div>
-            <div id="content" class="section">
-                <h2>
-                    RESUME
-                    <a
-                        href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
-                        <img src="download-icon.svg" height="15px" style="float: right;" />
-                    </a>
-                </h2>
-
-                <iframe id="resume"
-                    src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
-            </div>
+            </header>
+            <main class="section">
+                <article>
+                    <header>
+                        <h2>
+                            RESUME
+                            <a
+                                href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
+                                <img src="download-icon.svg" class="icon" alt="Download resume">
+                            </a>
+                        </h2>
+                    </header>
+                    <iframe id="resume"
+                        src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
+                </article>
+            </main>
         </div>
     </div>
 </body>
