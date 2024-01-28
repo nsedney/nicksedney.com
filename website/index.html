@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Nick Sedney's homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
     <title>Nick Sedney's Home Page</title>
 
@@ -15,14 +17,15 @@
             display: flex;
             justify-content: center;
             height: 100vh;
+            font-family: Helvetica, Arial;
+            font-variant: small-caps;
         }
 
         #container {
-            background-image: url("mountains.jpg");
+            background-image: url("images/mountains.jpg");
             background-attachment: scroll;
             background-position: center;
             background-size: cover;
-            font-family: Helvetica, Arial;
             margin: 10px;
             border-radius: 10px;
             max-width: 900px;
@@ -32,11 +35,19 @@
             flex-direction: column;
         }
 
-        #page {
+        #content {
             padding: 10px;
             flex: 1;
             display: flex;
             flex-direction: column;
+        }
+
+        header#title,
+        main {
+            background: lightgrey;
+            opacity: 0.8;
+            padding: 10px 15px;
+            margin: 4px;
         }
 
         header#title {
@@ -57,16 +68,9 @@
             flex-direction: column;
         }
 
-        .section {
-            background: lightgrey;
-            padding: 15px;
-            margin: 4px;
-            opacity: 0.7;
-        }
-
-        header .icon {
-            float: right;
-            height: 15px;
+        article header {
+            display: flex;
+            flex-direction: row;
         }
 
         h1,
@@ -75,33 +79,63 @@
             font-weight: bold;
         }
 
+        article h2 {
+            flex: 1;
+        }
+
+        /* Replace 'Download' text with an icon */
+        .download-link {
+            visibility: hidden;
+        }
+
+        .download-link::after {
+            content: "";
+            visibility: visible;
+            display: inline-block;
+            vertical-align: middle;
+            width: 1em;
+            height: 1em;
+            background-size: 100%;
+            background-image: url("images/download-icon.svg");
+        }
+
         #resume {
             flex: 1;
-            box-sizing: content-box;
+        }
+
+        aside {
+            margin-top: 4px;
+            text-align: right;
+            font-size: .85em;
         }
     </style>
 </head>
 
-<body class="center">
-    <div id="container" class="center">
-        <div id="page">
-            <header id="title" class="section">
-                <h1>NICK SEDNEY</h1>
+<body>
+    <div id="container">
+        <div id="content">
+            <header id="title">
+                <h1>Nick Sedney</h1>
                 The Hompage
             </header>
-            <main class="section">
+            <main>
                 <article>
                     <header>
                         <h2>
-                            RESUME
-                            <a
-                                href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf">
-                                <img src="download-icon.svg" class="icon" alt="Download resume">
-                            </a>
+                            Resume
                         </h2>
+                        <a href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU/export?format=pdf"
+                            class="download-link" type="application/x-pdf">
+                            Download
+                        </a>
                     </header>
-                    <iframe id="resume"
+                    <iframe title="Nicholas Sedney's Resume" id="resume"
                         src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
+                    <aside>
+                        <a href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU">
+                            View in <strong>Google Docs</strong>
+                        </a>
+                    </aside>
                 </article>
             </main>
         </div>
