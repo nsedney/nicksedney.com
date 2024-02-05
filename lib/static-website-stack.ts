@@ -119,7 +119,7 @@ export class StaticWebsiteStack extends cdk.Stack {
       code: cloundfront.FunctionCode.fromInline(`
         function handler(event) {
           return {
-            statusCode: 302,
+            statusCode: 301,
             headers: {
                "location": { "value": "https://${primaryDomainName}" }
             }
