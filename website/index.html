@@ -11,55 +11,62 @@
     <title>Nick Sedney's Home Page</title>
 
     <style>
-        body {
-            background-color: #18191e;
-            margin: 0px;
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-            font-family: Helvetica, Arial;
+        html {
+            background: linear-gradient(135deg, #39434d, #000000 60%);
+            font-family: Helvetica, sans-serif;
             font-variant: small-caps;
         }
 
+        body {
+            margin: 1vb;
+            display: flex;
+            place-content: center;
+            block-size: 98vb;
+        }
+
         #container {
-            background-image: url("images/mountains.jpg");
-            background-attachment: scroll;
-            background-position: center;
-            background-size: cover;
-            margin: 10px;
+            background: url("images/mountains.jpg") center / cover fixed;
             border-radius: 10px;
-            max-width: 900px;
-            min-height: 500px !important;
+            max-inline-size: 900px;
+            min-block-size: 500px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         #content {
-            padding: 10px;
+            margin: 15px;
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 5px;
         }
 
-        header#title,
-        main {
+        #content>* {
             background: lightgrey;
             opacity: 0.8;
-            padding: 10px 15px;
-            margin: 4px;
+            padding-block: 10px;
+            padding-inline: 15px;
         }
 
-        header#title {
-            text-align: right;
-            border-radius: 10px 10px 0px 0px;
+        #content> :first-child {
+            border-start-start-radius: 10px;
+            border-start-end-radius: 10px;
+        }
+
+        #content> :last-child {
+            border-end-start-radius: 10px;
+            border-end-end-radius: 10px;
+        }
+
+        #content>header {
+            text-align: end;
         }
 
         main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            border-radius: 0px 0px 10px 10px;
         }
 
         article {
@@ -73,8 +80,7 @@
             flex-direction: row;
         }
 
-        h1,
-        h2 {
+        :is(h1, h2) {
             margin: 0px;
             font-weight: bold;
         }
@@ -83,30 +89,34 @@
             flex: 1;
         }
 
-        /* Replace 'Download' text with an icon */
-        .download-link {
-            visibility: hidden;
-        }
-
-        .download-link::after {
-            content: "";
-            visibility: visible;
-            display: inline-block;
-            vertical-align: middle;
-            width: 1em;
-            height: 1em;
-            background-size: 100%;
-            background-image: url("images/download-icon.svg");
-        }
-
         #resume {
             flex: 1;
         }
 
         aside {
-            margin-top: 4px;
-            text-align: right;
+            text-align: end;
             font-size: .85em;
+        }
+
+        /* Replace 'Download' text with an icon */
+        a.download-link {
+            visibility: hidden;
+        }
+
+        a.download-link::after {
+            content: "⬇️";
+            visibility: visible;
+        }
+
+        a.egress-link {
+            display: inline-block;
+            padding: 3px;
+            color: blue;
+            text-decoration: none;
+        }
+
+        a.egress-link::after {
+            content: "↗️";
         }
     </style>
 </head>
@@ -114,7 +124,7 @@
 <body>
     <div id="container">
         <div id="content">
-            <header id="title">
+            <header>
                 <h1>Nick Sedney</h1>
                 The Hompage
             </header>
@@ -132,7 +142,8 @@
                     <iframe title="Nicholas Sedney's Resume" id="resume"
                         src="https://docs.google.com/document/d/e/2PACX-1vSCx_7AXbSKJ5M5AOLbOCLUb9oWuou2zYS0D0Nx6AbKGjA3tTk0wNonzfDL6EQJZReWr8Tj8o1iP0ba/pub?embedded=true"></iframe>
                     <aside>
-                        <a href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU">
+                        <a class="egress-link" target="_blank"
+                            href="https://docs.google.com/document/d/1pmss0DKezKl8v6qgXa_99rg7bCVst_W2LaXXdMbfAvU">
                             View in <strong>Google Docs</strong>
                         </a>
                     </aside>
