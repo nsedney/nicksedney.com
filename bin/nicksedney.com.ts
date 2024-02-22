@@ -14,6 +14,7 @@ const stackConfig = {
   redirectDomains: [
     { registeredDomain: "nicholassedney.com", supportedSubdomains: ["*.nicholassedney.com"] },
     { registeredDomain: "nsedney.com", supportedSubdomains: ["*.nsedney.com"] },
+    { registeredDomain: "nickess.com", supportedSubdomains: ["*.nickess.com"] },
   ] as DomainConfig[]
 };
 
@@ -21,7 +22,7 @@ const app = new cdk.App();
 
 // We need to create our HTTPS cert in a separate stack as it needs to exist in `us-east-1` region:
 // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_certificatemanager-readme.html#cross-region-certificates 
-const certStack = new PublicCertificateStack(app, 'NicksedneyCertStack', {
+const httpsCertStack = new PublicCertificateStack(app, 'NicksedneyHttpsCert', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT, // We appear to need to explicitly provide `account` for multi-stack deployment
     region: "us-east-1", // TODO: Are there defined types we could/should use?  What's ts convention for constants?
@@ -43,5 +44,6 @@ new StaticWebsiteStack(app, 'NicksedneyComStack', {
   // customParams
   primaryDomain: stackConfig.domain,
   redirectDomains: stackConfig.redirectDomains,
-  websiteCert: certStack.nickSedneyCert,
-}).addDependency(certStack);
+  websiteCert: httpsCertStack.cert,
+  isBridgyHandle: true
+}).addDependency(httpsCertStack);

@@ -22,5 +22,13 @@
   "hosted-zone:account=491781553203:domainName=nsedney.com:region=us-west-2": {
     "Id": "/hostedzone/Z03733891YC5WOEZFLJY0",
     "Name": "nsedney.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nickess.com:region=us-east-1": {
+    "Id": "/hostedzone/Z09010193R2JTK3DVG6UW",
+    "Name": "nickess.com."
+  },
+  "hosted-zone:account=491781553203:domainName=nickess.com:region=us-west-2": {
+    "Id": "/hostedzone/Z09010193R2JTK3DVG6UW",
+    "Name": "nickess.com."
   }
 }

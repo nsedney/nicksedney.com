@@ -19,7 +19,28 @@ export interface StaticWebsiteStackProps extends cdk.StackProps {
   redirectDomains?: DomainConfig[],
   /** Certificate must be created in `us-east-1`, and associated with all provided domains */
   websiteCert: acm.Certificate;
+  /** Set to 'true' if you want to use this site's domain as a handle on fed.brid.gy */
+  isBridgyHandle?: boolean;
 }
+
+// Redirects that enable use of site's url as handle on fed.brid.gy
+// TODO: Possible to regex or something to combine these into a single rule?
+const BRIDGY_FEDIVERSE_REDIRECTS: s3.RoutingRule[] = [
+  {
+    condition: { keyPrefixEquals: '.well-known/host-meta', },
+    hostName: 'fed.brid.gy',
+    replaceKey: s3.ReplaceKey.prefixWith('.well-known/host-meta'),
+    httpRedirectCode: '302',
+    protocol: s3.RedirectProtocol.HTTPS
+  },
+  {
+    condition: { keyPrefixEquals: '.well-known/webfinger', },
+    hostName: 'fed.brid.gy',
+    replaceKey: s3.ReplaceKey.prefixWith('.well-known/webfinger'),
+    httpRedirectCode: '302',
+    protocol: s3.RedirectProtocol.HTTPS
+  }
+] as const;
 
 /**
  * Configures an S3-hosted website:
@@ -54,6 +75,7 @@ export class StaticWebsiteStack extends cdk.Stack {
       bucketName: primaryDomainName,
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "error.html",
+      websiteRoutingRules: props.isBridgyHandle ? BRIDGY_FEDIVERSE_REDIRECTS : undefined,
       serverAccessLogsBucket: accessLogsBucket,
       serverAccessLogsPrefix: `${primaryDomainName}/`,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
@@ -76,10 +98,11 @@ export class StaticWebsiteStack extends cdk.Stack {
       comment: `Distribution for ${primaryDomainName} website content`,
       defaultBehavior: {
         origin: new cforigins.S3Origin(websiteBucket),
-        viewerProtocolPolicy: cloundfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+        viewerProtocolPolicy: cloundfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        originRequestPolicy: cloundfront.OriginRequestPolicy.ALL_VIEWER
       },
       domainNames: [primaryDomainName],
-      certificate: props.websiteCert
+      certificate: props.websiteCert,
     })
 
     // Route DNS traffic to CloudFront Distribution
@@ -140,7 +163,7 @@ export class StaticWebsiteStack extends cdk.Stack {
         }],
       },
       domainNames: alternateDomainNames,
-      certificate: props.websiteCert
+      certificate: props.websiteCert,
     })
 
     /**
