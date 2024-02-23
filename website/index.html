@@ -11,10 +11,16 @@
     <title>Nick Sedney's Home Page</title>
 
     <style>
+        :root {
+            --main-text-color: rgba(0, 0, 0, 0.9);
+        }
+
+
         html {
             background: linear-gradient(135deg, #39434d, #000000 60%);
             font-family: Helvetica, sans-serif;
             font-variant: small-caps;
+            color: var(--main-text-color);
         }
 
         body {
@@ -69,6 +75,27 @@
             flex-direction: column;
         }
 
+        #content>footer h2 {
+            font-size: smaller;
+        }
+
+        #content>footer a {
+            color: blue;
+            text-decoration: inherit;
+            font-weight: bolder;
+        }
+
+        #content>footer nav {
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+            justify-content: center;
+        }
+
+        #content>footer a {
+            font-size: smaller;
+        }
+
         article {
             flex: 1;
             display: flex;
@@ -82,7 +109,6 @@
 
         :is(h1, h2) {
             margin: 0px;
-            font-weight: bold;
         }
 
         article h2 {
@@ -118,6 +144,11 @@
         a.egress-link::after {
             content: "↗️";
         }
+
+        .h-card a {
+            text-decoration: inherit;
+            color: inherit;
+        }
     </style>
 </head>
 
@@ -125,9 +156,14 @@
     <div id="container">
         <div id="content">
             <header>
-                <h1>Nick Sedney</h1>
+                <h1>
+                    <span class="h-card">
+                        <a class="u-url u-uid" rel="me" href="/">Nick Sedney</a>
+                    </span>
+                </h1>
                 The Hompage
             </header>
+
             <main>
                 <article>
                     <header>
@@ -149,6 +185,14 @@
                     </aside>
                 </article>
             </main>
+
+            <footer>
+                <nav>
+                    <h2>Find me:</h2>
+                    <a href="https://github.com/nsedney" rel="me">Github</a>
+                    <a href="https://bsky.app/profile/nicksedney.com" rel="me">Bluesky</a>
+                    <a href="https://www.linkedin.com/in/nicholas-sedney-5a09492a5" rel="me">LinkedIn</a>
+            </footer>
         </div>
     </div>
 </body>
