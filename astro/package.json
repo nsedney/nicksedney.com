@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@picocss/pico": "^2.1.1",
     "astro": "^5.14.4"
   }
 }

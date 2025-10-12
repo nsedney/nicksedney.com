@@ -1,10 +1,11 @@
 ---
 import Navigation from "../components/Navigation.astro";
 import Socials from "../components/Socials.astro";
+import "@picocss/pico/css/pico.classless.cyan.min.css";
 
 interface Props {
 	title?: string;
-	description?: string
+	description?: string;
 }
 
 const { title = "Nick Sedney's Website", description } = Astro.props;
@@ -16,16 +17,12 @@ const { title = "Nick Sedney's Website", description } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css"
-		/>
 		<title>{title}</title>
 	</head>
 
 	<body class="container">
 		<header>
-				<Navigation />
+			<Navigation />
 			<hgroup>
 				<h1>{title}</h1>
 				{description && <p>{description}</p>}
