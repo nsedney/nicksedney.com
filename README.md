@@ -8,7 +8,7 @@ I'm currently hosted on aws - check out the `lib` package for [CDK](https://docs
 As currently configured, the site can be found in `./website`; files are hosted in an s3 bucket, Route53 and CloudFront are configured to serve the static site for relevant domains.  All of this is managed via [CDK](https://docs.aws.amazon.com/cdk/) - check out the `bin` and `lib` directories to see how everything is put together.
 
 ### Deploying the site.
-To deploy the site, `node` (recomend version 24) and the `aws-cli` must be installed.
+To deploy the site, `node` (recomend version 22) and the `aws-cli` must be installed; a [dev container](https://code.visualstudio.com/docs/devcontainers/containers) configuration is provided that will give you ready-to-build development environment using VSCode or a [GitHub Codespace](https://github.com/features/codespaces).
 
 #### Deploying from the CLI
 To deploy, follow these steps:
