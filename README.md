@@ -5,13 +5,29 @@ This is my website!
 I'm currently hosted on aws - check out the `lib` package for [CDK](https://docs.aws.amazon.com/cdk/) stack definition that makes that happen.
 
 ## Setup/Architecture
-As currently configured, the site can be found in `./website`; files are hosted in an s3 bucket, Route53 and CloudFront are configured to serve the static site for relevant domains.  All of this is managed via [CDK](https://docs.aws.amazon.com/cdk/) - check out the `bin` and `lib` directories to see how everything is put together.
+Static site is hosted in an s3 bucket, Route53 and CloudFront are configured to serve the static site for relevant domains.
+All of this is managed via [CDK](https://docs.aws.amazon.com/cdk/) - check out the `bin` and `lib` directories to see how everything is put together.
+
+Site configuration can be found in `bin/nicksedney.com.ts`; the `staticSiteLocation` directs where to find the site's content locally.
+The current iteration of the site is build using [Astro](https://astro.build/), found in `website/astro`. After building the Astro project, static content can be uploaded from `website/astro/dist`.
 
 ### Deploying the site.
 To deploy the site, `node` (recomend version 22) and the `aws-cli` must be installed; a [dev container](https://code.visualstudio.com/docs/devcontainers/containers) configuration is provided that will give you ready-to-build development environment using VSCode or a [GitHub Codespace](https://github.com/features/codespaces).
 
 #### Deploying from the CLI
+
+##### Generating site content
+The current iteration of the site is built with Astro - to generate the sites content, build the site from the `website/astro` directory:
+```
+cd website/astro
+npm ci
+npm run build
+```
+This will generate the site's content at `website/astro/dist`
+
+##### Deploying to AWS
 To deploy, follow these steps:
+* Ensure site content is available at the location indicated by `staticSiteLocation` in `bin/nicksedney.com.ts` - see previous section.
 * Authenticate with appropriate permissions to deploy to the account where domains are registered.  The recomended way to configure this is with an [IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) user.  Use the following command, considering:
   * An `SSO start URL` will be requested - find this by logging into the AWS console with an appropriate account and navigating to the `IAM Identity Center`; look for the `AWS access portal URL`.
   * Use region `us-west-2`.
@@ -27,20 +43,18 @@ npm run deploy
 ``` 
 
 #### Deploying with Docker
-A `Dockerfile` is provided that will build an image with all requisite dependencies (`aws-cli` and `node`).  To deploy with Docker:
+A `Dockerfile` is provided that will build an image with all requisite dependencies (`aws-cli` and `node`).  To build and deploy with Docker:
 
 * On a machine with the Docker daemon running, navigate to the project root and run:
 ```
 docker build . -t nsedney-dev
 docker run -it -v ./:/app --rm nsedney-dev
 ```
-This should launch a shell from which site can be deployed.
 
-* From the shell as follows, considering:
-  * As above, requested `SSO start URL` can be found by navigating to the `IAM Identity Center` in the AWS console, listed as the `AWS access portal URL`; use region `us-west-2`.
-  * `--use-device-code` is required as otherwise browser-based login will attempt to communicate with the aws-cli via a local port that's inaccesible on the running container.
+This should launch a shell from which site can be deployed using the directions above, with one caveat:
+Docker by default won't expose the port used by AWS browser-based authentication, so the `--use-device-code` option must be used.
+
+To authenticate from a shell within the Docker container run:
 ```
 aws configure sso --use-device-code --profile default
-npm ci
-npm run deploy
 ```

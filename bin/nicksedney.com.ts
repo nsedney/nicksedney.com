@@ -5,8 +5,11 @@ import { StaticWebsiteStack } from '../lib/static-website-stack';
 import { PublicCertificateStack } from '../lib/public-certificate-stack';
 import type { DomainConfig } from '../lib/types';
 
+// Location of static site to be deployed, relative to project root
+const staticSiteLocation = "website/astro/dist";
+
 /** 
- * Defina all domains we'd like to use for our site.  Note each `registeredDomain` must be registered in Route53,
+ * Define all domains we'd like to use for our site.  Note each `registeredDomain` must be registered in Route53,
  * along with a corresponding `HostedZone` that should have been created on registration.
  */
 const stackConfig = {
@@ -45,5 +48,6 @@ new StaticWebsiteStack(app, 'NicksedneyComStack', {
   primaryDomain: stackConfig.domain,
   redirectDomains: stackConfig.redirectDomains,
   websiteCert: httpsCertStack.cert,
+  websitePath: staticSiteLocation,
   isBridgyHandle: true
 }).addDependency(httpsCertStack);

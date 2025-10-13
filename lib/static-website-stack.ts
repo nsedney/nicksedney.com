@@ -19,6 +19,8 @@ export interface StaticWebsiteStackProps extends cdk.StackProps {
   redirectDomains?: DomainConfig[],
   /** Certificate must be created in `us-east-1`, and associated with all provided domains */
   websiteCert: acm.Certificate;
+  /** Path relative to project root  */
+  websitePath: string;
   /** Set to 'true' if you want to use this site's domain as a handle on fed.brid.gy */
   isBridgyHandle?: boolean;
 }
@@ -116,7 +118,7 @@ export class StaticWebsiteStack extends cdk.Stack {
 
     // Create S3 deployment to populate the websiteBucket with website's content
     const deployment = new s3deployment.BucketDeployment(this, `${primaryDomainName}_bucketDeployment`, {
-      sources: [s3deployment.Source.asset("website")],
+      sources: [s3deployment.Source.asset(props.websitePath)],
       destinationBucket: websiteBucket,
       distribution: websiteCloudfront // Invalidate CloudFront cache on deploy
     })
