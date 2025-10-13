@@ -1,0 +1,25 @@
+@use "@picocss/pico/scss/pico" with ( //
+    // classless 'semantic container' gives styling for semantic tags    
+    $enable-semantic-container: true,
+    $enable-classes: false,
+
+    // Available colors: https://picocss.com/docs/version-picker
+    $theme-color: "cyan",
+
+    // Disable modules not currently used for smaller footprint
+    $modules: ("content/code": false,
+        "forms/basics": false,
+        "forms/checkbox-radio-switch": false,
+        "forms/input-color": false,
+        "forms/input-date": false,
+        "forms/input-file": false,
+        "forms/input-range": false,
+        "forms/input-search": false,
+        "components/accordion": false,
+        "components/dropdown": false,
+        "components/group": false,
+        "components/loading": false,
+        "components/modal": false,
+        "components/progress": false,
+        "components/tooltip": false) //
+);
